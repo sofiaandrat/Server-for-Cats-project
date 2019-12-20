@@ -52,10 +52,23 @@ namespace Server
                     // отправляем ответ
                     string message = "";
                     if(builder.ToString() == "Time")
+                    {
                         message = timer.AnswerTimer().ToString(CultureInfo.InvariantCulture);
-
-                    data = Encoding.Unicode.GetBytes(message);
-                    handler.Send(data);
+                        data = Encoding.Unicode.GetBytes(message);
+                        handler.Send(data);
+                    }
+                    if(builder.ToString() == "SpeedOfTime")
+                    {
+                        builder.Clear();
+                        do
+                        {
+                            bytes = handler.Receive(data);
+                            builder.Append(Encoding.Unicode.GetString(data, 0, bytes));
+                        }
+                        while (handler.Available > 0);                        
+                        timer.Iteration = Convert.ToInt32(builder.ToString());
+                        Console.WriteLine(DateTime.Now.ToShortTimeString() + ": " + builder.ToString());
+                    }                    
                     // закрываем сокет
                     handler.Shutdown(SocketShutdown.Both);
                     handler.Close();
