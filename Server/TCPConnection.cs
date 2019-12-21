@@ -57,6 +57,7 @@ namespace Server
                         data = Encoding.Unicode.GetBytes(message);
                         handler.Send(data);
                     }
+
                     if(builder.ToString() == "SpeedOfTime")
                     {
                         builder.Clear();
@@ -69,6 +70,7 @@ namespace Server
                         timer.Iteration = Convert.ToInt32(builder.ToString());
                         Console.WriteLine(DateTime.Now.ToShortTimeString() + ": " + builder.ToString());
                     }                    
+
                     // закрываем сокет
                     handler.Shutdown(SocketShutdown.Both);
                     handler.Close();
